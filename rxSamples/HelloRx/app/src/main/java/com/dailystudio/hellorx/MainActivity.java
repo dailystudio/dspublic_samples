@@ -10,14 +10,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.dailystudio.development.Logger;
+
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final static long COUNT_INTERVAL = 800;
 
     private TextView mTextView;
 
@@ -32,11 +39,20 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+/*
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+*/
 
-                Observable.just(getString(R.string.hello_rx))
-                        .subscribeOn(Schedulers.io())
+                Observable.intervalRange(0, 11, 0, COUNT_INTERVAL, TimeUnit.MILLISECONDS)
+                        .map(new Function<Long, String>() {
+
+                            @Override
+                            public String apply(Long aLong) throws Exception {
+                                return String.valueOf(10 - aLong);
+                            }
+
+                        }).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<String>() {
                             @Override
@@ -58,8 +74,35 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onComplete() {
+                                Observable.timer(COUNT_INTERVAL, TimeUnit.MILLISECONDS)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new Observer<Long>() {
+                                            @Override
+                                            public void onSubscribe(Disposable d) {
 
-                            }
+                                            }
+
+                                            @Override
+                                            public void onNext(Long value) {
+
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+
+                                            }
+
+                                            @Override
+                                            public void onComplete() {
+                                                if (mTextView != null) {
+                                                    mTextView.setTextAppearance(MainActivity.this,
+                                                            R.style.CounterCompleteText);
+                                                    mTextView.setText(R.string.hello_rx);
+                                                }
+                                           }
+                                        });
+                           }
                         });
             }
         });

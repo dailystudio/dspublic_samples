@@ -17,4 +17,15 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="CounterText">
+        <item name="android:textSize">@dimen/counter_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="CounterCompleteText" parent="CounterText">
+        <item name="android:textSize">@dimen/counter_complete_text_size</item>
+    </style>
+
+
 </resources>
