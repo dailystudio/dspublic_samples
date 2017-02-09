@@ -17,6 +17,6 @@
         android:id="@+id/hello_text"
         style="@style/CounterText"
         android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </RelativeLayout>

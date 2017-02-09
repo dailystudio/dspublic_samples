@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private final static long COUNT_INTERVAL = 800;
 
     private TextView mTextView;
+    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,82 +36,86 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-/*
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-*/
-
-                Observable.intervalRange(0, 11, 0, COUNT_INTERVAL, TimeUnit.MILLISECONDS)
-                        .map(new Function<Long, String>() {
-
-                            @Override
-                            public String apply(Long aLong) throws Exception {
-                                return String.valueOf(10 - aLong);
-                            }
-
-                        }).subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<String>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onNext(String value) {
-                                if (mTextView != null) {
-                                    mTextView.setText(value);
-                                }
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                Observable.timer(COUNT_INTERVAL, TimeUnit.MILLISECONDS)
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(new Observer<Long>() {
-                                            @Override
-                                            public void onSubscribe(Disposable d) {
-
-                                            }
-
-                                            @Override
-                                            public void onNext(Long value) {
-
-                                            }
-
-                                            @Override
-                                            public void onError(Throwable e) {
-
-                                            }
-
-                                            @Override
-                                            public void onComplete() {
-                                                if (mTextView != null) {
-                                                    mTextView.setTextAppearance(MainActivity.this,
-                                                            R.style.CounterCompleteText);
-                                                    mTextView.setText(R.string.hello_rx);
-                                                }
-                                           }
-                                        });
-                           }
-                        });
-            }
-        });
-
         setupViews();
     }
 
     private void setupViews() {
+
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        if (mFab != null) {
+            mFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mFab.setClickable(false);
+
+                    Observable.intervalRange(0, 11, 0, COUNT_INTERVAL, TimeUnit.MILLISECONDS)
+                            .map(new Function<Long, String>() {
+
+                                @Override
+                                public String apply(Long aLong) throws Exception {
+                                    return String.valueOf(10 - aLong);
+                                }
+
+                            }).subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<String>() {
+                                @Override
+                                public void onSubscribe(Disposable d) {
+
+                                }
+
+                                @Override
+                                public void onNext(String value) {
+                                    if (mTextView != null) {
+                                        mTextView.setTextAppearance(MainActivity.this,
+                                                R.style.CounterText);
+                                        mTextView.setText(value);
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onComplete() {
+                                    Observable.timer(COUNT_INTERVAL, TimeUnit.MILLISECONDS)
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(new Observer<Long>() {
+                                                @Override
+                                                public void onSubscribe(Disposable d) {
+
+                                                }
+
+                                                @Override
+                                                public void onNext(Long value) {
+
+                                                }
+
+                                                @Override
+                                                public void onError(Throwable e) {
+
+                                                }
+
+                                                @Override
+                                                public void onComplete() {
+                                                    mFab.setClickable(true);
+
+                                                    if (mTextView != null) {
+                                                        mTextView.setTextAppearance(MainActivity.this,
+                                                                R.style.CounterCompleteText);
+                                                        mTextView.setText(R.string.hello_rx);
+                                                    }
+                                                }
+                                            });
+                                }
+                            });
+                }
+            });
+        }
+
         mTextView = (TextView) findViewById(R.id.hello_text);
     }
 

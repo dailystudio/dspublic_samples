@@ -20,6 +20,7 @@
     <style name="CounterText">
         <item name="android:textSize">@dimen/counter_text_size</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
