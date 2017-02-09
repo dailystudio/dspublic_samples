@@ -1,6 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
+
     compileSdkVersion Integer.parseInt(androidCompileSdkVersion)
     buildToolsVersion androidBuildToolsVersion
 
@@ -73,4 +78,9 @@ dependencies {
 
     compile "io.reactivex.rxjava2:rxandroid:${project.ext.rxAndroidVersion}"
     compile "io.reactivex.rxjava2:rxjava:${project.ext.rxJavaVersion}"
+    compile "com.jakewharton.rxbinding:rxbinding:${project.ext.rxBindingVersion}"
+    compile "com.jakewharton.rxbinding:rxbinding-support-v4:${project.ext.rxBindingVersion}"
+    compile "com.jakewharton.rxbinding:rxbinding-appcompat-v7:${project.ext.rxBindingVersion}"
+    compile "com.jakewharton.rxbinding:rxbinding-design:${project.ext.rxBindingVersion}"
+    compile "com.jakewharton.rxbinding:rxbinding-recyclerview-v7:${project.ext.rxBindingVersion}"
 }
