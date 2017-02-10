@@ -17,4 +17,17 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="NoteInput">
+        <item name="android:background">@null</item>
+        <item name="android:padding">@dimen/default_app_item_padding</item>
+    </style>
+
+    <style name="NoteTitleInput" parent="NoteInput">
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="NoteTitleContent" parent="NoteInput">
+        <item name="android:gravity">top|left</item>
+    </style>
+
 </resources>

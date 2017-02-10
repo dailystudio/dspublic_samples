@@ -2,21 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/default_content_padding"
     android:fitsSystemWindows="true">
 
     <EditText
         android:id="@+id/note_title"
+        style="@style/NoteTitleInput"
+        android:hint="@string/note_title_hint"
+        android:nextFocusForward="@+id/note_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <View
+        android:id="@+id/note_separator"
         android:background="@color/colorPrimary"
+        android:layout_below="@id/note_title"
         android:layout_width="match_parent"
         android:layout_height="2px"/>
 
     <EditText
         android:id="@+id/note_content"
+        style="@style/NoteTitleContent"
+        android:hint="@string/note_content_hint"
+        android:layout_below="@id/note_separator"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

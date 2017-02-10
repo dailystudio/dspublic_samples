@@ -19,7 +19,7 @@ public class EditNoteFragment extends AbsLoaderFragment<Void> {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_edit_not, null);
+        View view = inflater.inflate(R.layout.fragment_edit_note, null);
 
         setupViews(view);
 
