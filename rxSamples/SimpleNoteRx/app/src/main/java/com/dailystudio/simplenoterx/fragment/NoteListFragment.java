@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dailystudio.dataobject.database.DatabaseConnectivity;
+import com.dailystudio.development.Logger;
 import com.dailystudio.simplenoterx.R;
 import com.dailystudio.simplenoterx.databaseobject.NoteObject;
 import com.dailystudio.simplenoterx.databaseobject.NoteObjectDatabaseModal;
@@ -24,6 +25,7 @@ import java.util.List;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.schedulers.Schedulers;
@@ -40,6 +42,8 @@ public class NoteListFragment extends Fragment {
 
     private View mEmptyView;
 
+    private Subscription mNotesSubscription;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,7 +53,6 @@ public class NoteListFragment extends Fragment {
 
         return view;
     }
-
     private void setupViews(View fragmentView) {
         if (fragmentView == null) {
             return;
@@ -65,8 +68,27 @@ public class NoteListFragment extends Fragment {
         }
 
         mEmptyView = fragmentView.findViewById(android.R.id.empty);
+    }
 
-        final Observable<List<NoteObject>> notesObservable = Observable.create(new Observable.OnSubscribe<List<NoteObject>>() {
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        createSubscription();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        if (mNotesSubscription != null
+                && mNotesSubscription.isUnsubscribed()) {
+            mNotesSubscription.unsubscribe();
+        }
+    }
+
+    private void createSubscription() {
+        Observable<List<NoteObject>> notesObservable = Observable.create(new Observable.OnSubscribe<List<NoteObject>>() {
 
             @Override
             public void call(final Subscriber<? super List<NoteObject>> subscriber) {
@@ -75,12 +97,12 @@ public class NoteListFragment extends Fragment {
 
                 final ContentObserver observer =
                         new ContentObserver(mContentObserverHandler) {
-                    @Override public void onChange(boolean selfChange) {
-                        List<NoteObject> notes =
-                                NoteObjectDatabaseModal.listNotes(getContext());
-                        subscriber.onNext(notes);
-                    }
-                };
+                            @Override public void onChange(boolean selfChange) {
+                                List<NoteObject> notes =
+                                        NoteObjectDatabaseModal.listNotes(getContext());
+                                subscriber.onNext(notes);
+                            }
+                        };
 
                 DatabaseConnectivity connectivity =
                         new DatabaseConnectivity(context, NoteObject.class);
@@ -101,15 +123,10 @@ public class NoteListFragment extends Fragment {
             }
 
         })
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribeOn(Schedulers.io());
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
 
-/*        Observable.create(new Observable.OnSubscribe<List<NoteObject>>() {
-            @Override public void call(Subscriber<? super List<NoteObject>> subscriber) {
-                notesObservable.unsafeSubscribe(subscriber);
-            }
-        })*/
-        notesObservable.subscribe(new Observer<List<NoteObject>>() {
+        mNotesSubscription = notesObservable.subscribe(new Observer<List<NoteObject>>() {
             @Override
             public void onCompleted() {
 
@@ -128,6 +145,7 @@ public class NoteListFragment extends Fragment {
                         || noteObjects.size() <= 0));
             }
         });
+
     }
 
     private void setEmptyViewVisible(boolean visible) {

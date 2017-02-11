@@ -7,6 +7,8 @@ import android.widget.TextView;
 import com.dailystudio.simplenoterx.R;
 import com.dailystudio.simplenoterx.databaseobject.NoteObject;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by nanye on 17/2/10.
  */
@@ -14,6 +16,7 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
 
     private TextView mTitleView;
     private TextView mContentView;
+    private TextView mFooterView;
 
     public NoteViewHolder(View itemView) {
         super(itemView);
@@ -28,6 +31,7 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
 
         mTitleView = (TextView) itemView.findViewById(R.id.note_title);
         mContentView = (TextView) itemView.findViewById(R.id.note_content);
+        mFooterView = (TextView) itemView.findViewById(R.id.note_footer);
     }
 
     public void bindNote(NoteObject noteObject) {
@@ -41,6 +45,12 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
 
         if (mContentView != null) {
             mContentView.setText(noteObject.getContent());
+        }
+
+        if (mFooterView != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
+
+            mFooterView.setText(sdf.format(noteObject.getTime()));
         }
     }
 

@@ -5,12 +5,17 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="card_height">100dp</dimen>
+    <dimen name="card_footer_round_radius">8dp</dimen>
 
-    <dimen name="note_card_title_font_size">16dp</dimen>
     <dimen name="note_card_text_padding_h">5dp</dimen>
     <dimen name="note_card_text_padding_v">3dp</dimen>
+    <dimen name="note_card_title_font_size">16dp</dimen>
     <dimen name="note_card_content_font_size">14dp</dimen>
+    <dimen name="note_card_footer_font_size">10dp</dimen>
+    <dimen name="note_card_footer_margin">3dp</dimen>
+    <dimen name="note_card_footer_padding">3dp</dimen>
     <dimen name="note_card_separator_margin">3dp</dimen>
+
     <dimen name="note_list_padding">8dp</dimen>
 
 </resources>

@@ -33,6 +33,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <TextView
+            android:id="@+id/note_footer"
+            style="@style/NoteCardFooter"
+            android:background="@drawable/round_bg"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="@dimen/note_card_footer_margin"
+            android:layout_marginBottom="@dimen/note_card_footer_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
