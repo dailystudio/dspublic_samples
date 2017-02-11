@@ -76,11 +76,6 @@ dependencies {
     compile "com.android.support:appcompat-v7:${project.ext.appcompatVersion}"
     compile "com.android.support:design:${project.ext.designVersion}"
 
-    compile "io.reactivex.rxjava2:rxandroid:${project.ext.rxAndroidVersion}"
-    compile "io.reactivex.rxjava2:rxjava:${project.ext.rxJavaVersion}"
-    compile "com.jakewharton.rxbinding:rxbinding:${project.ext.rxBindingVersion}"
-    compile "com.jakewharton.rxbinding:rxbinding-support-v4:${project.ext.rxBindingVersion}"
-    compile "com.jakewharton.rxbinding:rxbinding-appcompat-v7:${project.ext.rxBindingVersion}"
-    compile "com.jakewharton.rxbinding:rxbinding-design:${project.ext.rxBindingVersion}"
-    compile "com.jakewharton.rxbinding:rxbinding-recyclerview-v7:${project.ext.rxBindingVersion}"
+    compile "io.reactivex:rxandroid:${project.ext.rxAndroidVersion}"
+//    compile "io.reactivex:rxjava:1.2.6"
 }

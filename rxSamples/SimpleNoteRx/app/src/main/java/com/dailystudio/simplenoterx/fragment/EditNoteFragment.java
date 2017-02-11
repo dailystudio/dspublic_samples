@@ -2,19 +2,23 @@ package com.dailystudio.simplenoterx.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.Loader;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
-import com.dailystudio.app.fragment.AbsLoaderFragment;
+import com.dailystudio.app.fragment.BaseIntentFragment;
 import com.dailystudio.simplenoterx.R;
 
 /**
  * Created by nanye on 17/2/9.
  */
 
-public class EditNoteFragment extends AbsLoaderFragment<Void> {
+public class EditNoteFragment extends BaseIntentFragment {
+
+    private EditText mTitleEdit;
+    private EditText mContentEdit;
 
     @Nullable
     @Override
@@ -30,31 +34,30 @@ public class EditNoteFragment extends AbsLoaderFragment<Void> {
         if (fragmentView == null) {
             return;
         }
+
+        mTitleEdit = (EditText) fragmentView.findViewById(R.id.note_title);
+        mContentEdit = (EditText) fragmentView.findViewById(R.id.note_content);
     }
 
-    @Override
-    protected int getLoaderId() {
-        return 0;
+    public String getNoteTitle() {
+        return getEditText(mTitleEdit);
     }
 
-    @Override
-    protected Bundle createLoaderArguments() {
-        return null;
+    public String getNoteContent() {
+        return getEditText(mContentEdit);
     }
 
-    @Override
-    public Loader<Void> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
+    public String getEditText(EditText editView) {
+        if (editView == null) {
+            return null;
+        }
 
-    @Override
-    public void onLoadFinished(Loader<Void> loader, Void data) {
+        Editable editable = editView.getText();
+        if (editable == null) {
+            return null;
+        }
 
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Void> loader) {
-
+        return editable.toString();
     }
 
 }

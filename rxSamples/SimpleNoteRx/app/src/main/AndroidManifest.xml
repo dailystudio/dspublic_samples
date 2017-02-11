@@ -21,9 +21,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.EditNoteActivity"
+        <activity
+            android:name=".activity.EditNoteActivity"
+            android:label="@string/activity_title_new_note"
             android:theme="@style/AppTheme" />
 
+        <provider
+            android:authorities="com.dailystudio.simplenoterx"
+            android:name=".SimpleNoteRxConnectivityProvider"/>
+        
     </application>
 
 </manifest>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DefaultCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/card_height">
+
+        <TextView
+            android:id="@+id/note_title"
+            style="@style/NoteCardTitle"
+            android:background="@drawable/card_header_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+<!--
+
+        <View
+            android:id="@+id/note_separator"
+            android:background="@color/colorPrimary"
+            android:layout_margin="@dimen/note_card_separator_margin"
+            android:layout_below="@id/note_title"
+            android:layout_width="match_parent"
+            android:layout_height="2px"/>
+-->
+
+        <TextView
+            android:id="@+id/note_content"
+            style="@style/NoteCardContent"
+            android:layout_below="@id/note_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

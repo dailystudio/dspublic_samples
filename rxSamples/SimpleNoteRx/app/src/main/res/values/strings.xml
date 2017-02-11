@@ -1,8 +1,15 @@
 <resources>
     <string name="app_name">Simple Note (Rx)</string>
+
+    <string name="activity_title_new_note">New note</string>
+    <string name="activity_title_edit_note">Edit note</string>
+
     <string name="action_settings">Settings</string>
+    <string name="action_done">Done</string>
 
     <string name="note_title_hint">Title here</string>
     <string name="note_content_hint">Type anything you want here...</string>
+    <string name="prompt_note_saved">Note successfully save.</string>
+    <string name="no_notes_prompt">No notes existed.</string>
 
 </resources>

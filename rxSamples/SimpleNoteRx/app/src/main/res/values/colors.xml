@@ -3,4 +3,7 @@
     <color name="colorPrimary">#DA0077</color>
     <color name="colorPrimaryDark">#B60075</color>
     <color name="colorAccent">#4D1773</color>
+
+    <color name="card_title_bg_color">@color/colorPrimary</color>
+
 </resources>
