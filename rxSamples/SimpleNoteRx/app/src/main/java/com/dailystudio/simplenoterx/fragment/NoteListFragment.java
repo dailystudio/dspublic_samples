@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dailystudio.dataobject.database.DatabaseConnectivity;
-import com.dailystudio.development.Logger;
 import com.dailystudio.simplenoterx.R;
 import com.dailystudio.simplenoterx.databaseobject.NoteObject;
 import com.dailystudio.simplenoterx.databaseobject.NoteObjectDatabaseModal;
@@ -53,6 +52,7 @@ public class NoteListFragment extends Fragment {
 
         return view;
     }
+
     private void setupViews(View fragmentView) {
         if (fragmentView == null) {
             return;
@@ -123,8 +123,9 @@ public class NoteListFragment extends Fragment {
             }
 
         })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io());
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io());
+
 
         mNotesSubscription = notesObservable.subscribe(new Observer<List<NoteObject>>() {
             @Override
