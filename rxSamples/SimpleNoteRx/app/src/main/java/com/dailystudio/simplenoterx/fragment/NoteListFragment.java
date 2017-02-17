@@ -24,6 +24,7 @@ import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.thread.EventThread;
 
+import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
 import rx.Observer;
@@ -176,6 +177,14 @@ public class NoteListFragment extends Fragment {
         }
 
         mEmptyView.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    public ArrayList<Integer> getSelectedNoteIds() {
+        if (mAdapter == null) {
+            return null;
+        }
+
+        return mAdapter.getNoteIds(true);
     }
 
     final Handler mContentObserverHandler = new Handler(Looper.getMainLooper());

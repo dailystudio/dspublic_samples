@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.dailystudio.dataobject.query.ExpressionToken;
 import com.dailystudio.dataobject.query.OrderingToken;
 import com.dailystudio.dataobject.query.Query;
+import com.dailystudio.datetime.dataobject.TimeCapsule;
 import com.dailystudio.datetime.dataobject.TimeCapsuleDatabaseReader;
 import com.dailystudio.datetime.dataobject.TimeCapsuleDatabaseWriter;
 
@@ -91,6 +92,29 @@ public class NoteObjectDatabaseModal {
         }
 
         return reader.query(query);
+    }
+
+    public static int deleteNodes(Context context, List<Integer> ids) {
+        if (context == null
+                || ids == null
+                || ids.size() <= 0) {
+            return 0;
+        }
+
+        TimeCapsuleDatabaseWriter<NoteObject> writer =
+                new TimeCapsuleDatabaseWriter<>(context, NoteObject.class);
+
+        Query query = new Query(NoteObject.class);
+
+        ExpressionToken selToken =
+                NoteObject.COLUMN_ID.inValues(ids.toArray(new Integer[0]));
+        if (selToken == null) {
+            return 0;
+        }
+
+        query.setSelection(selToken);
+
+        return writer.delete(query);
     }
 
 }

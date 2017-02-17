@@ -10,6 +10,8 @@ public class Constants {
         EVENT_NONE,
         EVENT_NEW_NOTE,
         EVENT_UPDATE_NOTE,
+        EVENT_DELETE_NOTE,
+        EVENT_DELETE_NOTES,
     };
 
     public enum EditModeEvent {
@@ -20,5 +22,6 @@ public class Constants {
     public final static String ACTION_EDIT_NOTE = "simplenoterx.intent.ACTION_EDIT_NOTE";
 
     public final static String EXTRA_NOTE_ID = "simplenoterx.intent.EXTRA_NOTE_ID";
+    public final static String EXTRA_NOTE_IDS = "simplenoterx.intent.EXTRA_NOTE_IDS";
 
 }

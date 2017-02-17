@@ -15,7 +15,13 @@
     <string name="prompt_no_notes">No notes existed.</string>
     <string name="prompt_new_note">New note is added.</string>
     <string name="prompt_update_note">Note is updated.</string>
+    <string name="prompt_delete_note">Note is deleted.</string>
+    <string name="prompt_delete_notes">Notes are deleted.</string>
+
+
     <string name="activity_title_delete_note">Delete notes</string>
+    <string name="dialog_delete_message">Do you want to delete all of the notes selected?</string>
+    <string name="dialog_delete_title">Confirm</string>
 
 
 </resources>

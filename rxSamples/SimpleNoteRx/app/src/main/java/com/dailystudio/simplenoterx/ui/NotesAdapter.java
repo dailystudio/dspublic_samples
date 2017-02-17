@@ -159,7 +159,39 @@ public class NotesAdapter extends RecyclerView.Adapter<NoteViewHolder> {
     };
 
     public List<NoteObject> getNotes() {
-        return new ArrayList<>(mNotes);
+        return getNotes(false);
+    }
+
+    public List<NoteObject> getNotes(boolean onlySelected) {
+        List<NoteObject> notes = new ArrayList<>();
+
+        for (NoteObject noteObject: mNotes) {
+            if (onlySelected && !noteObject.isSelected()) {
+                continue;
+            }
+
+            notes.add(noteObject);
+        }
+
+        return notes;
+    }
+
+    public ArrayList<Integer> getNoteIds() {
+        return getNoteIds(false);
+    }
+
+    public ArrayList<Integer> getNoteIds(boolean onlySelected) {
+        ArrayList<Integer> noteIds = new ArrayList<>();
+
+        for (NoteObject noteObject: mNotes) {
+            if (onlySelected && !noteObject.isSelected()) {
+                continue;
+            }
+
+            noteIds.add(noteObject.getId());
+        }
+
+        return noteIds;
     }
 
     public void setEditMode(boolean enabled) {
