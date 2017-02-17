@@ -74,9 +74,8 @@ public class EditNoteActivity extends ActionBarFragmentActivity {
                     title, content, object);
 
             if (object != null) {
-                RxBus.get().post(new Integer(
-                        (mNoteId == 0 ? Constants.EVENT_NEW_NOTE
-                                : Constants.EVENT_UPDATE_NOTE)));
+                RxBus.get().post((mNoteId == 0 ? Constants.DbEvent.EVENT_NEW_NOTE
+                                : Constants.DbEvent.EVENT_UPDATE_NOTE));
             }
 
             finish();

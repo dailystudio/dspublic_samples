@@ -6,9 +6,16 @@ package com.dailystudio.simplenoterx;
 
 public class Constants {
 
-    public final static int EVENT_NONE = 0x00;
-    public final static int EVENT_NEW_NOTE = 0x01;
-    public final static int EVENT_UPDATE_NOTE = 0x02;
+    public enum DbEvent {
+        EVENT_NONE,
+        EVENT_NEW_NOTE,
+        EVENT_UPDATE_NOTE,
+    };
+
+    public enum EditModeEvent {
+        EVENT_ENTER,
+        EVENT_LEAVE,
+    }
 
     public final static String ACTION_EDIT_NOTE = "simplenoterx.intent.ACTION_EDIT_NOTE";
 

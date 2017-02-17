@@ -15,10 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dailystudio.dataobject.database.DatabaseConnectivity;
+import com.dailystudio.simplenoterx.Constants;
 import com.dailystudio.simplenoterx.R;
 import com.dailystudio.simplenoterx.databaseobject.NoteObject;
 import com.dailystudio.simplenoterx.databaseobject.NoteObjectDatabaseModal;
 import com.dailystudio.simplenoterx.ui.NotesAdapter;
+import com.hwangjr.rxbus.RxBus;
+import com.hwangjr.rxbus.annotation.Subscribe;
+import com.hwangjr.rxbus.thread.EventThread;
 
 import java.util.List;
 import rx.Observable;
@@ -75,6 +79,8 @@ public class NoteListFragment extends Fragment {
         super.onAttach(context);
 
         createSubscription();
+
+        RxBus.get().register(this);
     }
 
     @Override
@@ -84,6 +90,21 @@ public class NoteListFragment extends Fragment {
         if (mNotesSubscription != null
                 && mNotesSubscription.isUnsubscribed()) {
             mNotesSubscription.unsubscribe();
+        }
+
+        RxBus.get().unregister(this);
+    }
+
+    @Subscribe(thread = EventThread.MAIN_THREAD)
+    protected void onEditModeEvent(final Constants.EditModeEvent event) {
+        if (mAdapter == null) {
+            return;
+        }
+
+        if (event == Constants.EditModeEvent.EVENT_ENTER) {
+            mAdapter.setEditMode(true);
+        } else if (event == Constants.EditModeEvent.EVENT_LEAVE) {
+            mAdapter.setEditMode(false);
         }
     }
 

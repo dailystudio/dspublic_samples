@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -24,8 +25,11 @@ public class MainActivity extends AppCompatActivity {
     private final static long PROMPT_DELAY = 500;
 
     private boolean mSuppressNotify = false;
-    private int mLastEventId = Constants.EVENT_NONE;
+    private Constants.DbEvent mLastEventId = Constants.DbEvent.EVENT_NONE;
 
+    private FloatingActionButton mFab;
+
+    private boolean mInEditMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,17 +38,21 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
 
-                Intent i = new Intent();
-                i.setClass(getApplicationContext(), EditNoteActivity.class);
+                if (mInEditMode) {
 
-                ActivityLauncher.launchActivity(MainActivity.this, i);
+                } else {
+                    Intent i = new Intent();
+                    i.setClass(getApplicationContext(), EditNoteActivity.class);
+
+                    ActivityLauncher.launchActivity(MainActivity.this, i);
+                }
             }
         });
 
@@ -70,12 +78,22 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         if (mSuppressNotify
-                && mLastEventId != Constants.EVENT_NONE) {
+                && mLastEventId != Constants.DbEvent.EVENT_NONE) {
             showPrompt(mLastEventId);
 
-            mLastEventId = Constants.EVENT_NONE;
+            mLastEventId = Constants.DbEvent.EVENT_NONE;
             mSuppressNotify = false;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mInEditMode) {
+            RxBus.get().post(Constants.EditModeEvent.EVENT_LEAVE);
+            return;
+        }
+
+        super.onBackPressed();
     }
 
     @Override
@@ -100,22 +118,17 @@ public class MainActivity extends AppCompatActivity {
         RxBus.get().unregister(this);
     }
 
-    private void showPrompt(final int event) {
+    private void showPrompt(final Constants.DbEvent event) {
         Logger.debug("show prompt for event = %d", event);
 
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 int resId = 0;
-                switch (event) {
-                    case Constants.EVENT_NEW_NOTE:
-                        resId = R.string.prompt_new_note;
-                        break;
-
-                    case Constants.EVENT_UPDATE_NOTE:
-                        resId = R.string.prompt_update_note;
-                        break;
-
+                if (event == Constants.DbEvent.EVENT_NEW_NOTE) {
+                    resId = R.string.prompt_new_note;
+                } else if (event == Constants.DbEvent.EVENT_UPDATE_NOTE) {
+                    resId = R.string.prompt_update_note;
                 }
 
                 if (resId > 0) {
@@ -128,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe(thread = EventThread.MAIN_THREAD)
-    public void onDdEvent(final Integer event) {
+    public void onDdEvent(Constants.DbEvent event) {
         if (mSuppressNotify) {
             Logger.debug("suppress notify, do it after resume: %d",
                     event);
@@ -138,6 +151,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         showPrompt(event);
+    }
+
+    @Subscribe(thread = EventThread.MAIN_THREAD)
+    protected void onEditModeEvent(Constants.EditModeEvent event) {
+        if (event == null) {
+            return;
+        }
+
+        if (event == Constants.EditModeEvent.EVENT_ENTER) {
+            mInEditMode = true;
+            mFab.setImageResource(R.drawable.ic_action_delete);
+        } else if (event == Constants.EditModeEvent.EVENT_LEAVE) {
+            mInEditMode = false;
+            mFab.setImageResource(R.drawable.ic_action_edit);
+        }
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(mInEditMode ?
+                    R.string.activity_title_delete_note : R.string.app_name);
+        }
     }
 
     private Handler mHandler = new Handler();

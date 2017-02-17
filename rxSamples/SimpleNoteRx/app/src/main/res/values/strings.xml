@@ -15,6 +15,7 @@
     <string name="prompt_no_notes">No notes existed.</string>
     <string name="prompt_new_note">New note is added.</string>
     <string name="prompt_update_note">Note is updated.</string>
+    <string name="activity_title_delete_note">Delete notes</string>
 
 
 </resources>

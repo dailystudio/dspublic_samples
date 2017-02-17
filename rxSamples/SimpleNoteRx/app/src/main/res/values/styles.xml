@@ -53,6 +53,9 @@
         <item name="android:maxLines">4</item>
     </style>
 
+    <style name="NoteCardContentDisabled" parent="NoteCardContent">
+        <item name="android:textColor">@color/gray</item>
+    </style>
 
     <style name="NoteCardFooter">
         <item name="android:gravity">end|center_vertical</item>

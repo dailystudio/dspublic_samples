@@ -42,10 +42,27 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
 
         if (mTitleView != null) {
             mTitleView.setText(noteObject.getTitle());
+            if (noteObject.isSelected()) {
+                mTitleView.setBackgroundResource(
+                        R.drawable.card_header_bg_disabled);
+            } else {
+                mTitleView.setBackgroundResource(
+                        R.drawable.card_header_bg);
+            }
         }
 
         if (mContentView != null) {
             mContentView.setText(noteObject.getContent());
+
+            if (noteObject.isSelected()) {
+                mContentView.setTextAppearance(
+                        mContentView.getContext(),
+                        R.style.NoteCardContentDisabled);
+            } else {
+                mContentView.setTextAppearance(
+                        mContentView.getContext(),
+                        R.style.NoteCardContent);
+            }
         }
 
         if (mFooterView != null) {
@@ -55,6 +72,14 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
                     context.getString(R.string.note_date_fmt));
 
             mFooterView.setText(sdf.format(noteObject.getTime()));
+
+            if (noteObject.isSelected()) {
+                mFooterView.setBackgroundResource(
+                        R.drawable.round_bg_disabled);
+            } else {
+                mFooterView.setBackgroundResource(
+                        R.drawable.card_header_bg);
+            }
         }
     }
 

@@ -21,6 +21,8 @@ public class NoteObject extends TimeCapsule {
             COLUMN_CONTENT,
     };
 
+    private boolean mSelected = false;
+
     public NoteObject(Context context) {
         super(context);
 
@@ -43,6 +45,14 @@ public class NoteObject extends TimeCapsule {
 
     public String getContent() {
         return getTextValue(COLUMN_CONTENT);
+    }
+
+    public void setSelected(boolean selected) {
+        mSelected = selected;
+    }
+
+    public boolean isSelected() {
+        return mSelected;
     }
 
 }
