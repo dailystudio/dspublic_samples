@@ -1,5 +1,6 @@
 package com.dailystudio.simplenoterx.ui;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -48,7 +49,10 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
         }
 
         if (mFooterView != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
+            final Context context = mFooterView.getContext();
+
+            SimpleDateFormat sdf = new SimpleDateFormat(
+                    context.getString(R.string.note_date_fmt));
 
             mFooterView.setText(sdf.format(noteObject.getTime()));
         }

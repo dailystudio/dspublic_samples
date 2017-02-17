@@ -13,7 +13,7 @@
     <TextView
         android:id="@android:id/empty"
         style="@style/DefaultEmptyText"
-        android:text="@string/no_notes_prompt"
+        android:text="@string/prompt_no_notes"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 
