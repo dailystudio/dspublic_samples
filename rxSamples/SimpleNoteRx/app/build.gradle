@@ -77,5 +77,6 @@ dependencies {
     compile "com.android.support:design:${project.ext.designVersion}"
 
     compile "io.reactivex:rxandroid:${project.ext.rxAndroidVersion}"
+    compile "com.hwangjr.rxbus:rxbus:${project.ext.rxBusVersion}"
 //    compile "io.reactivex:rxjava:1.2.6"
 }

@@ -1,8 +1,8 @@
 package com.dailystudio.simplenoterx.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.Menu;
@@ -10,18 +10,20 @@ import android.view.MenuItem;
 
 import com.dailystudio.app.activity.ActionBarFragmentActivity;
 import com.dailystudio.development.Logger;
+import com.dailystudio.simplenoterx.Constants;
 import com.dailystudio.simplenoterx.R;
 import com.dailystudio.simplenoterx.databaseobject.NoteObject;
 import com.dailystudio.simplenoterx.databaseobject.NoteObjectDatabaseModal;
 import com.dailystudio.simplenoterx.fragment.EditNoteFragment;
-
-import java.util.concurrent.Callable;
+import com.hwangjr.rxbus.RxBus;
 
 /**
  * Created by nanye on 17/2/9.
  */
 
 public class EditNoteActivity extends ActionBarFragmentActivity {
+
+    private int mNoteId = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,14 +63,21 @@ public class EditNoteActivity extends ActionBarFragmentActivity {
 
             final String title = editFragment.getNoteTitle();
             final String content = editFragment.getNoteContent();
-            Logger.debug("title = %s, content = %s",
-                    title, content);
 
-            NoteObjectDatabaseModal.addOrUpdateNote(
+            NoteObject object = NoteObjectDatabaseModal.addOrUpdateNote(
                     getApplicationContext(),
                     title,
                     content,
-                    -1);
+                    mNoteId);
+            Logger.debug("[%s]title = [%s], content = [%s], object = %s",
+                    (mNoteId == 0 ? "new" : "update"),
+                    title, content, object);
+
+            if (object != null) {
+                RxBus.get().post(new Integer(
+                        (mNoteId == 0 ? Constants.EVENT_NEW_NOTE
+                                : Constants.EVENT_UPDATE_NOTE)));
+            }
 
             finish();
 
@@ -84,5 +93,18 @@ public class EditNoteActivity extends ActionBarFragmentActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
+
+    @Override
+    public void bindIntent(Intent intent) {
+        super.bindIntent(intent);
+
+        if (intent == null) {
+            return;
+        }
+
+        mNoteId = intent.getIntExtra(Constants.EXTRA_NOTE_ID, 0);
+    }
+
+
 
 }

@@ -13,6 +13,8 @@
 
     <string name="prompt_note_saved">Note successfully save.</string>
     <string name="prompt_no_notes">No notes existed.</string>
+    <string name="prompt_new_note">New note is added.</string>
+    <string name="prompt_update_note">Note is updated.</string>
 
 
 </resources>
