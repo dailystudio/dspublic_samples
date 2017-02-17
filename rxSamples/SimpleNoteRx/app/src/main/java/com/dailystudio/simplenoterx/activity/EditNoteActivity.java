@@ -102,6 +102,11 @@ public class EditNoteActivity extends ActionBarFragmentActivity {
         }
 
         mNoteId = intent.getIntExtra(Constants.EXTRA_NOTE_ID, 0);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle((mNoteId != 0 ? R.string.activity_title_edit_note
+                    : R.string.activity_title_new_note));
+        }
     }
 
 
