@@ -1,4 +1,4 @@
 include ':app'
-include ':devbricks'
-
-project(':devbricks').projectDir = new File('../../../devbricks')
+//include ':devbricks'
+//
+//project(':devbricks').projectDir = new File('../../../devbricks')

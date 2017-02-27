@@ -69,8 +69,8 @@ dependencies {
 
     compile "com.facebook.stetho:stetho:${project.ext.stethoVersion}"
 
-//    compile "com.github.dailystudio:devbricks:${project.ext.devbricksLibVersion}"
-    compile project(':devbricks')
+    compile "com.github.dailystudio:devbricks:${project.ext.devbricksLibVersion}"
+//    compile project(':devbricks')
 
     compile "com.android.support:support-v4:${project.ext.androidSupportVersion}"
     compile "com.android.support:appcompat-v7:${project.ext.appcompatVersion}"
@@ -78,5 +78,4 @@ dependencies {
 
     compile "io.reactivex:rxandroid:${project.ext.rxAndroidVersion}"
     compile "com.hwangjr.rxbus:rxbus:${project.ext.rxBusVersion}"
-//    compile "io.reactivex:rxjava:1.2.6"
 }
