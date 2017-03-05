@@ -1,0 +1,4 @@
+include ':app'
+include ':devbricks'
+
+project(':devbricks').projectDir = new File('../../../../../../dailystudio/devbricks/')
