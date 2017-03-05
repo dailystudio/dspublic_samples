@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="defaultSquareViewLineColor">@color/light_gray</color>
+    <color name="defaultSquareViewDotColor">@color/md_light_blue_100</color>
+    <color name="defaultSquareViewDotOutlineColor">@color/black</color>
+
 </resources>

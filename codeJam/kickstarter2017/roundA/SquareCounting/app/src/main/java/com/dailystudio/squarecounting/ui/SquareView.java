@@ -22,8 +22,11 @@ public class SquareView extends View {
 
     private final static int MINI_SQUARE_SIZE = 10;
 
-    private final static int MIN_DIMEN = 2;
+    private final static int MIN_DIMEN = 4;
     private final static int DASH_PHASE = 50;
+
+    private final static int SQUARE_DOTS_AXIS = 2;
+    private final static int SQUARE_DOTS_COUNT = 4;
 
     private int mRows = MIN_DIMEN;
     private int mCols = MIN_DIMEN;
@@ -31,13 +34,19 @@ public class SquareView extends View {
 
     private float[] mDashIntervals;
 
-    private int mLineWidth = 5;
+    private int mLineWidth = 1;
+    private int mDotLineWidth = 2;
     private int mLineColor = Color.GRAY;
     private Paint mLinePaint;
+    private Paint mDotsLinePaint;
 
-    private int mDotRadius = 10;
-    private int mDotLineWidth = 10;
+    private int mDotRadius = 5;
+    private int mDotOutlineWidth = 1;
+    private int mDotColor = Color.GRAY;
+    private int mDotOutlineColor = Color.BLACK;
     private Paint mDotPaint;
+
+    private int[][] mSquareDots = new int[SQUARE_DOTS_COUNT][SQUARE_DOTS_AXIS];
 
     public SquareView(Context context) {
         this(context, null);
@@ -61,12 +70,16 @@ public class SquareView extends View {
 
         mLineWidth = res.getDimensionPixelSize(
                 R.dimen.default_square_line_width);
-        mLineColor = res.getColor(R.color.light_gray);
+        mDotLineWidth = res.getDimensionPixelSize(
+                R.dimen.default_square_dot_line_width);
+        mLineColor = res.getColor(R.color.defaultSquareViewLineColor);
 
         mDotRadius = res.getDimensionPixelSize(
                 R.dimen.default_square_dot_radius);
-        mDotLineWidth = res.getDimensionPixelSize(
-                R.dimen.default_square_dot_line_width);
+        mDotOutlineWidth = res.getDimensionPixelSize(
+                R.dimen.default_square_dot_outline_width);
+        mDotColor = res.getColor(R.color.defaultSquareViewDotColor);
+        mDotOutlineColor = res.getColor(R.color.defaultSquareViewDotOutlineColor);
 
         a.recycle();
 
@@ -75,20 +88,55 @@ public class SquareView extends View {
 
     private void initMembers() {
         mLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
         mLinePaint.setStyle(Paint.Style.STROKE);
         mLinePaint.setColor(mLineColor);
         mLinePaint.setStrokeWidth(mLineWidth);
 
+        mDotsLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mDotsLinePaint.setColor(Color.BLACK);
+        mDotsLinePaint.setStrokeWidth(mDotLineWidth);
+        mDotsLinePaint.setStyle(Paint.Style.STROKE);
+
         mDotPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mDotPaint.setStrokeWidth(mLineWidth);
+        mDotPaint.setStrokeWidth(mDotOutlineWidth);
+
+        int dots[][] =  {
+            {2, 0},
+            {3, 2},
+            {1, 3},
+            {0, 1},
+        };
+
+        setSquareDots(dots);
     }
 
     public void setSquareDimens(int rows, int cols) {
         mRows = rows;
         mCols = cols;
 
+        clearSquareDots();
+
         invalidate();
+    }
+
+    public void setSquareDots(int[][] dots) {
+        if (dots == null) {
+            return;
+        }
+
+        for (int i = 0; i < SQUARE_DOTS_COUNT; i++) {
+            for (int j = 0; j < SQUARE_DOTS_AXIS; j++) {
+                mSquareDots[i][j] = dots[i][j];
+            }
+        }
+    }
+
+    public void clearSquareDots() {
+        for (int i = 0; i < SQUARE_DOTS_COUNT; i++) {
+            for (int j = 0; j < SQUARE_DOTS_AXIS; j++) {
+                mSquareDots[i][j] = -1;
+            }
+        }
     }
 
     @Override
@@ -101,40 +149,87 @@ public class SquareView extends View {
         Path p;
         int xOffset;
         int yOffset;
-        for (int col = 0; col <= mCols; col++) {
-            xOffset = col * mCellSize + mDotRadius / 2;
+        for (int col = 0; col < mCols; col++) {
+            xOffset = col * mCellSize + mDotRadius + mDotOutlineWidth;
 
             p = new Path();
 
-            p.moveTo(xOffset, 0);
-            p.lineTo(xOffset, getHeight());
+            p.moveTo(xOffset, mDotRadius + mDotOutlineWidth);
+            p.lineTo(xOffset, getHeight() - mDotRadius - mDotOutlineWidth);
             canvas.drawPath(p, mLinePaint);
         }
 
-        for (int row = 1; row < mRows; row++) {
-            yOffset = row * mCellSize + mDotRadius / 2;
+        for (int row = 0; row < mRows; row++) {
+            yOffset = row * mCellSize + mDotRadius + mDotOutlineWidth;
 
             p = new Path();
 
-            p.moveTo(0, yOffset);
-            p.lineTo(getWidth(), yOffset);
+            p.moveTo(mDotRadius + mDotOutlineWidth, yOffset);
+            p.lineTo(getWidth() - mDotRadius - mDotOutlineWidth, yOffset);
             canvas.drawPath(p, mLinePaint);
         }
 
-        for (int col = 0; col <= mCols; col++) {
-            for (int row = 0; row <= mRows; row++) {
-                xOffset = col * mCellSize + mDotRadius / 2;
-                yOffset = row * mCellSize + mDotRadius / 2;
+        p = null;
+        int x0 = -1;
+        int y0 = -1;
+        for (int i = 0; i < SQUARE_DOTS_COUNT; i++) {
+            if (mSquareDots[i][0] == -1
+                    || mSquareDots[i][1] == -1) {
+                continue;
+            }
+
+            xOffset = mSquareDots[i][1] * mCellSize + mDotRadius + mDotOutlineWidth;
+            yOffset = mSquareDots[i][0] * mCellSize + mDotRadius + mDotOutlineWidth;
+
+            if (i == 0) {
+                p = new Path();
+
+                x0 = xOffset;
+                y0 = yOffset;
+                p.moveTo(xOffset, yOffset);
+            } else {
+                if (p != null) {
+                    p.lineTo(xOffset, yOffset);
+                }
+            }
+        }
+
+        if (p != null) {
+            if (x0 != -1 && y0 != -1) {
+                p.lineTo(x0, y0);
+            }
+
+            canvas.drawPath(p, mDotsLinePaint);
+        }
+
+        int dotIndex = -1;
+        for (int col = 0; col < mCols; col++) {
+            for (int row = 0; row < mRows; row++) {
+                dotIndex = getSquareDotIndex(row, col);
+
+                xOffset = col * mCellSize + mDotRadius + mDotOutlineWidth;
+                yOffset = row * mCellSize + mDotRadius + mDotOutlineWidth;
 
                 mDotPaint.setStyle(Paint.Style.STROKE);
-                mDotPaint.setColor(Color.BLACK);
+                mDotPaint.setColor(mDotOutlineColor);
                 canvas.drawCircle(xOffset, yOffset, mDotRadius, mDotPaint);
 
                 mDotPaint.setStyle(Paint.Style.FILL);
-                mDotPaint.setColor(Color.RED);
+                mDotPaint.setColor((dotIndex != -1 ?
+                        Color.BLACK : mDotColor));
                 canvas.drawCircle(xOffset, yOffset, mDotRadius, mDotPaint);
             }
         }
+    }
+
+    private int getSquareDotIndex(int row, int col) {
+        for (int i = 0; i < SQUARE_DOTS_COUNT; i++) {
+            if (mSquareDots[i][0] == row && mSquareDots[i][1] == col) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     @Override
@@ -146,14 +241,15 @@ public class SquareView extends View {
                 widthSpecSize, heightSpecSize);
 
         int minSize = Math.min(widthSpecSize, heightSpecSize);
-        int minDimen = Math.min(mRows, mCols);
+        int minDimen = Math.min(mRows, mCols) - 1;
 
-        mCellSize = (int)Math.floor((float)minSize / minDimen);
-        Logger.debug("minSize(%d) / minDimen(%d) = %d",
-                minSize, minDimen, mCellSize);
+        int cellTotalSize = minSize - 2 * mDotRadius - 2 * mDotOutlineWidth;
+//        minSize = minSize - 2 * mDotRadius;
 
-        int width = mCellSize * mCols;
-        int height = mCellSize * mRows;
+        mCellSize = Math.round((float)cellTotalSize / minDimen);
+        Logger.debug("cellTotalSize(%d) / minDimen(%d) = %d",
+                cellTotalSize, minDimen, mCellSize);
+
         int dashInterval = Math.max(mCellSize / DASH_PHASE, 5);
 
         mDashIntervals = new float[] {
@@ -161,7 +257,7 @@ public class SquareView extends View {
             dashInterval / 2,
         };
 
-        setMeasuredDimension(width, height);
+        setMeasuredDimension(minSize, minSize);
 
         Logger.debug("measured: width = %d, height = %d",
                 getMeasuredWidth(),
