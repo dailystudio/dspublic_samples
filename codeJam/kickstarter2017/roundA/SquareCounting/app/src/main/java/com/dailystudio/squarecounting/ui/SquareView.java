@@ -99,6 +99,7 @@ public class SquareView extends View {
 
         mDotPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mDotPaint.setStrokeWidth(mDotOutlineWidth);
+/*
 
         int dots[][] =  {
             {2, 0},
@@ -108,6 +109,7 @@ public class SquareView extends View {
         };
 
         setSquareDots(dots);
+*/
     }
 
     public void setSquareDimens(int rows, int cols) {
@@ -129,6 +131,8 @@ public class SquareView extends View {
                 mSquareDots[i][j] = dots[i][j];
             }
         }
+
+        invalidate();
     }
 
     public void clearSquareDots() {
@@ -155,7 +159,7 @@ public class SquareView extends View {
             p = new Path();
 
             p.moveTo(xOffset, mDotRadius + mDotOutlineWidth);
-            p.lineTo(xOffset, getHeight() - mDotRadius - mDotOutlineWidth);
+            p.lineTo(xOffset, mDotRadius + mDotOutlineWidth + (mRows - 1) * mCellSize);
             canvas.drawPath(p, mLinePaint);
         }
 
@@ -165,7 +169,7 @@ public class SquareView extends View {
             p = new Path();
 
             p.moveTo(mDotRadius + mDotOutlineWidth, yOffset);
-            p.lineTo(getWidth() - mDotRadius - mDotOutlineWidth, yOffset);
+            p.lineTo(mDotRadius + mDotOutlineWidth + (mCols - 1) * mCellSize, yOffset);
             canvas.drawPath(p, mLinePaint);
         }
 
@@ -241,14 +245,14 @@ public class SquareView extends View {
                 widthSpecSize, heightSpecSize);
 
         int minSize = Math.min(widthSpecSize, heightSpecSize);
-        int minDimen = Math.min(mRows, mCols) - 1;
+        int maxDimen = Math.max(mRows, mCols) - 1;
 
         int cellTotalSize = minSize - 2 * mDotRadius - 2 * mDotOutlineWidth;
 //        minSize = minSize - 2 * mDotRadius;
 
-        mCellSize = Math.round((float)cellTotalSize / minDimen);
-        Logger.debug("cellTotalSize(%d) / minDimen(%d) = %d",
-                cellTotalSize, minDimen, mCellSize);
+        mCellSize = Math.round((float)cellTotalSize / maxDimen);
+        Logger.debug("cellTotalSize(%d) / maxDimen(%d) = %d",
+                cellTotalSize, maxDimen, mCellSize);
 
         int dashInterval = Math.max(mCellSize / DASH_PHASE, 5);
 
