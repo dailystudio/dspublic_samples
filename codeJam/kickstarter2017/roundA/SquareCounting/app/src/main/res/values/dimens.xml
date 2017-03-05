@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+	
+	<dimen name="default_square_line_width">3dp</dimen>
+	<dimen name="default_square_dot_radius">5dp</dimen>
+	<dimen name="default_square_dot_line_width">2dp</dimen>
+
+</resources>
