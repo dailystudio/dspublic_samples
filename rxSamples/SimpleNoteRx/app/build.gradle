@@ -54,28 +54,32 @@ android {
             buildConfigField "boolean","USE_STETHO","true"
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 allprojects {
     repositories {
-        mavenCentral()
+        google()
         jcenter()
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
 
-    compile "com.facebook.stetho:stetho:${project.ext.stethoVersion}"
+    implementation "com.facebook.stetho:stetho:${project.ext.stethoVersion}"
 
-    compile "com.github.dailystudio:devbricks:${project.ext.devbricksLibVersion}"
+    implementation "com.github.dailystudio:devbricks:${project.ext.devbricksLibVersion}"
 //    compile project(':devbricks')
 
-    compile "com.android.support:support-v4:${project.ext.androidSupportVersion}"
-    compile "com.android.support:appcompat-v7:${project.ext.appcompatVersion}"
-    compile "com.android.support:design:${project.ext.designVersion}"
+    implementation "com.android.support:support-v4:${project.ext.androidSupportVersion}"
+    implementation "com.android.support:appcompat-v7:${project.ext.appcompatVersion}"
+    implementation "com.android.support:design:${project.ext.designVersion}"
 
-    compile "io.reactivex:rxandroid:${project.ext.rxAndroidVersion}"
-    compile "com.hwangjr.rxbus:rxbus:${project.ext.rxBusVersion}"
+    implementation "io.reactivex:rxandroid:${project.ext.rxAndroidVersion}"
+    implementation "com.hwangjr.rxbus:rxbus:${project.ext.rxBusVersion}"
 }

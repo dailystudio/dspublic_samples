@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe(thread = EventThread.MAIN_THREAD)
-    protected void onEditModeEvent(Constants.EditModeEvent event) {
+    public void onEditModeEvent(Constants.EditModeEvent event) {
         if (event == null) {
             return;
         }

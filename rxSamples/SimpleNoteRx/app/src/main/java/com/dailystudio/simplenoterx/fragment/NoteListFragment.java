@@ -97,7 +97,7 @@ public class NoteListFragment extends Fragment {
     }
 
     @Subscribe(thread = EventThread.MAIN_THREAD)
-    protected void onEditModeEvent(final Constants.EditModeEvent event) {
+    public void onEditModeEvent(final Constants.EditModeEvent event) {
         if (mAdapter == null) {
             return;
         }
